@@ -1,0 +1,2382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WriteEarn - Get Paid for Writing Documents</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #4361ee;
+            --secondary: #3a0ca3;
+            --accent: #4cc9f0;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4bb543;
+            --warning: #ffcc00;
+            --danger: #dc3545;
+            --premium: #FFD700;
+            --free: #28a745;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: var(--dark);
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        .logo i {
+            color: var(--accent);
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .balance {
+            background: var(--success);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: white;
+            border-radius: 15px;
+            padding: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            overflow-x: auto;
+        }
+
+        .nav-tab {
+            padding: 12px 25px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            white-space: nowrap;
+        }
+
+        .nav-tab.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .nav-tab:hover:not(.active) {
+            background: rgba(67, 97, 238, 0.1);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .page-title {
+            color: white;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            color: #718096;
+            font-size: 0.9rem;
+        }
+
+        .documents-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .document-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .document-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+
+        .document-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .document-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--dark);
+            margin-bottom: 5px;
+        }
+
+        .document-reward {
+            background: var(--warning);
+            color: var(--dark);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .document-description {
+            color: #718096;
+            margin-bottom: 20px;
+            line-height: 1.5;
+            flex-grow: 1;
+        }
+
+        .document-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .document-time, .document-category {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #718096;
+            font-size: 0.9rem;
+        }
+
+        .take-document-btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .take-document-btn:hover {
+            background: var(--secondary);
+        }
+
+        .writing-interface {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .writing-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .writing-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .writing-info {
+            display: flex;
+            gap: 15px;
+        }
+
+        .word-count, .time-left {
+            background: #e9ecef;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .writing-area {
+            width: 100%;
+            min-height: 400px;
+            padding: 20px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            line-height: 1.6;
+            resize: vertical;
+            margin-bottom: 20px;
+        }
+
+        .writing-actions {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .action-btn {
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .save-btn {
+            background: #e9ecef;
+            color: var(--dark);
+        }
+
+        .save-btn:hover {
+            background: #dee2e6;
+        }
+
+        .submit-btn {
+            background: var(--success);
+            color: white;
+        }
+
+        .submit-btn:hover {
+            background: #3fa23a;
+        }
+
+        .earnings-history {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .earnings-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .earnings-table th, .earnings-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .earnings-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .earnings-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .wallet-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 992px) {
+            .wallet-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .wallet-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .wallet-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .wallet-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .total-balance {
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-align: center;
+            margin: 30px 0;
+            color: var(--primary);
+        }
+
+        .balance-breakdown {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .balance-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 15px;
+            border-radius: 10px;
+            background: #f8f9fa;
+        }
+
+        .balance-amount {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .available .balance-amount {
+            color: var(--success);
+        }
+
+        .pending .balance-amount {
+            color: var(--warning);
+        }
+
+        .balance-label {
+            color: #718096;
+            font-size: 0.9rem;
+        }
+
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .payment-method {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .payment-method:hover, .payment-method.active {
+            border-color: var(--primary);
+            background: rgba(67, 97, 238, 0.05);
+        }
+
+        .payment-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        .payment-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .payment-fee {
+            color: #718096;
+            font-size: 0.8rem;
+        }
+
+        .withdraw-btn {
+            width: 100%;
+            padding: 15px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .withdraw-btn:hover {
+            background: var(--secondary);
+        }
+
+        .withdraw-btn:disabled {
+            background: #a0a0a0;
+            cursor: not-allowed;
+        }
+
+        .transactions-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .transactions-table th, .transactions-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .transactions-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .transactions-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-approved {
+            background: #d1edff;
+            color: #0c5460;
+        }
+
+        .status-paid {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-failed {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .amount-positive {
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        .amount-negative {
+            color: var(--danger);
+            font-weight: 600;
+        }
+
+        .payout-threshold {
+            background: #fff3cd;
+            border-left: 4px solid var(--warning);
+            padding: 15px;
+            border-radius: 0 10px 10px 0;
+            margin: 20px 0;
+        }
+
+        .payout-threshold p {
+            margin: 5px 0;
+            color: #856404;
+        }
+
+        .fee-explanation {
+            background: #e7f3ff;
+            border-left: 4px solid var(--primary);
+            padding: 20px;
+            border-radius: 0 10px 10px 0;
+            margin: 25px 0;
+        }
+
+        .fee-explanation h4 {
+            color: var(--primary);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .fee-explanation ul {
+            padding-left: 20px;
+            margin: 15px 0;
+        }
+
+        .fee-explanation li {
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .benefit-icon {
+            color: var(--success);
+            font-size: 1.2rem;
+            margin-top: 2px;
+        }
+
+        .mpesa-payment-section {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            margin-top: 30px;
+            display: none;
+        }
+
+        .mpesa-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+            color: var(--success);
+        }
+
+        .mpesa-steps {
+            margin: 20px 0;
+            padding-left: 20px;
+        }
+
+        .mpesa-steps li {
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        .mpesa-details {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .mpesa-details p {
+            margin: 8px 0;
+            font-family: monospace;
+        }
+
+        .mpesa-message-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            margin: 15px 0;
+            resize: vertical;
+            min-height: 120px;
+            font-family: monospace;
+        }
+
+        .mpesa-message-input:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        .verify-btn {
+            width: 100%;
+            padding: 15px;
+            background: var(--success);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .verify-btn:hover {
+            background: #3fa23a;
+        }
+
+        .message-example {
+            background: #e9ecef;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+        .validation-message {
+            padding: 10px;
+            border-radius: 10px;
+            margin: 10px 0;
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .validation-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .validation-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .document-category-badge {
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            background: #e9ecef;
+            color: var(--dark);
+        }
+
+        .document-difficulty {
+            display: flex;
+            gap: 5px;
+            margin: 10px 0;
+        }
+
+        .difficulty-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #e9ecef;
+        }
+
+        .difficulty-dot.filled {
+            background: var(--primary);
+        }
+
+        .completed {
+            border-left: 4px solid var(--success);
+        }
+
+        .in-progress {
+            border-left: 4px solid var(--warning);
+        }
+
+        /* Premium content styles */
+        .premium-badge {
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #000;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+
+        .free-badge {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+
+        .premium-card {
+            border: 2px solid #FFD700;
+            position: relative;
+        }
+
+        .premium-card:before {
+            content: "PREMIUM";
+            position: absolute;
+            top: -10px;
+            right: 20px;
+            background: #FFD700;
+            color: #000;
+            padding: 3px 15px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        .payment-required-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(45deg, #FFD700, #FFA500);
+            color: #000;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .payment-required-btn:hover {
+            background: linear-gradient(45deg, #FFA500, #FF8C00);
+            transform: translateY(-2px);
+        }
+
+        .payment-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .payment-modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .payment-options {
+            margin: 20px 0;
+        }
+
+        .payment-option {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .payment-option:hover {
+            background: #e9ecef;
+        }
+
+        .payment-option.selected {
+            border-color: var(--primary);
+            background: rgba(67, 97, 238, 0.1);
+        }
+
+        .survey-category {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+        }
+
+        .survey-category h3 {
+            margin-bottom: 15px;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .load-more-section {
+            text-align: center;
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+        }
+
+        .load-more-section .counter {
+            margin-bottom: 15px;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .load-more-btn {
+            max-width: 200px;
+            margin: 0 auto;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .load-more-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        @media (max-width: 768px) {
+            .documents-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .writing-header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+
+            .writing-info {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .writing-actions {
+                flex-direction: column;
+            }
+
+            .nav-tabs {
+                padding: 5px;
+            }
+
+            .nav-tab {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-pen-fancy"></i>
+                Write<span>Earn</span>
+            </div>
+            <div class="user-info">
+                <div class="user-name">Welcome, Sarah!</div>
+                <div class="balance">$142.75</div>
+            </div>
+        </header>
+
+        <div class="nav-tabs">
+            <div class="nav-tab active" data-tab="documents">
+                <i class="fas fa-file-alt"></i>
+                Available Documents
+            </div>
+            <div class="nav-tab" data-tab="free-surveys">
+                <i class="fas fa-chart-pie"></i>
+                Free Surveys
+            </div>
+            <div class="nav-tab" data-tab="premium">
+                <i class="fas fa-crown"></i>
+                Premium Content
+            </div>
+            <div class="nav-tab" data-tab="writing">
+                <i class="fas fa-edit"></i>
+                Writing Interface
+            </div>
+            <div class="nav-tab" data-tab="earnings">
+                <i class="fas fa-chart-line"></i>
+                Earnings History
+            </div>
+            <div class="nav-tab" data-tab="wallet">
+                <i class="fas fa-wallet"></i>
+                Wallet
+            </div>
+        </div>
+
+        <!-- Documents Tab - 100 Free Writing Tasks -->
+        <div class="tab-content active" id="documents-tab">
+            <h2 class="page-title">
+                <i class="fas fa-file-alt"></i>
+                Available Writing Tasks (100 Free Tasks)
+            </h2>
+
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number">100</div>
+                    <div class="stat-label">Available Tasks</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">7</div>
+                    <div class="stat-label">Completed Tasks</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">$325.50</div>
+                    <div class="stat-label">Total Earned</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">98%</div>
+                    <div class="stat-label">Approval Rate</div>
+                </div>
+            </div>
+
+            <div class="documents-grid">
+                <!-- Document 1 -->
+                <div class="document-card">
+                    <div class="free-badge"><i class="fas fa-check-circle"></i> FREE</div>
+                    <div class="document-header">
+                        <div>
+                            <div class="document-title">Product Review Blog Post</div>
+                            <div class="document-category-badge">Blog Content</div>
+                        </div>
+                        <div class="document-reward">$45.00</div>
+                    </div>
+                    <div class="document-difficulty">
+                        <div class="difficulty-dot filled"></div>
+                        <div class="difficulty-dot filled"></div>
+                        <div class="difficulty-dot"></div>
+                        <div class="difficulty-dot"></div>
+                        <div class="difficulty-dot"></div>
+                    </div>
+                    <p class="document-description">
+                        Write a 1200-word blog post reviewing the latest smartphone model. Focus on camera features, battery life, and value for money.
+                    </p>
+                    <div class="document-meta">
+                        <div class="document-time"><i class="far fa-clock"></i> 3 days left</div>
+                        <div class="document-category"><i class="fas fa-tags"></i> Technology</div>
+                    </div>
+                    <button class="take-document-btn" onclick="openWritingInterface(1)">
+                        <i class="fas fa-edit"></i> Start Writing
+                    </button>
+                </div>
+
+                <!-- Document 2 -->
+                <div class="document-card">
+                    <div class="free-badge"><i class="fas fa-check-circle"></i> FREE</div>
+                    <div class="document-header">
+                        <div>
+                            <div class="document-title">Academic Research Summary</div>
+                            <div class="document-category-badge">Academic Writing</div>
+                        </div>
+                        <div class="document-reward">$75.00</div>
+                    </div>
+                    <div class="document-difficulty">
+                        <div class="difficulty-dot filled"></div>
+                        <div class="difficulty-dot filled"></div>
+                        <div class="difficulty-dot filled"></div>
+                        <div class="difficulty-dot filled"></div>
+                        <div class="difficulty-dot"></div>
+                    </div>
+                    <p class="document-description">
+                        Summarize a 20-page academic paper on climate change impacts into a 5-page executive summary for policymakers.
+                    </p>
+                    <div class="document-meta">
+                        <div class="document-time"><i class="far fa-clock"></i> 5 days left</div>
+                        <div class="document-category"><i class="fas fa-tags"></i> Science</div>
+                    </div>
+                    <button class="take-document-btn" onclick="openWritingInterface(2)">
+                        <i class="fas fa-edit"></i> Start Writing
+                    </button>
+                </div>
+
+                <!-- Document 3 -->
+                <div class="document-card completed">
+                    <div class="free-badge"><i class="fas fa-check-circle"></i> FREE</div>
+                    <div class="document-header">
+                        <div>
+                            <div class="document-title">Company Newsletter</div>
+                            <div class="document-category-badge">Business Writing</div>
+                        </div>
+                        <div class="document-reward">$35.00</div>
+                    </div>
+                    <div class="document-difficulty">
+                        <div class="difficulty-dot filled"></div>
+                        <div class="difficulty-dot filled"></div>
+                        <div class="difficulty-dot"></div>
+                        <div class="difficulty-dot"></div>
+                        <div class="difficulty-dot"></div>
+                    </div>
+                    <p class="document-description">
+                        Create a monthly newsletter for a tech company highlighting recent achievements, team updates, and upcoming events.
+                    </p>
+                    <div class="document-meta">
+                        <div class="document-time"><i class="far fa-clock"></i> Completed</div>
+                        <div class="document-category"><i class="fas fa-tags"></i> Business</div>
+                    </div>
+                    <button class="take-document-btn" onclick="openWritingInterface(3)">
+                        <i class="fas fa-eye"></i> View Submission
+                    </button>
+                </div>
+
+                <!-- Document 4 -->
+                <div class="document-card in-progress">
+                    <div class="free-badge"><i class="fas fa-check-circle"></i> FREE</div>
+                    <div class="document-header">
+                        <div>
+                            <div class="document-title">Travel Guide Article</div>
+                            <div class="document-category-badge">Travel Writing</div>
+                        </div>
+                        <div class="document-reward">$60.00</div>
+                    </div>
+                    <div class="document-difficulty">
+                        <div class="difficulty-dot filled"></div>
+                        <div class="difficulty-dot filled"></div>
+                        <div class="difficulty-dot filled"></div>
+                        <div class="difficulty-dot"></div>
+                        <div class="difficulty-dot"></div>
+                    </div>
+                    <p class="document-description">
+                        Write a comprehensive travel guide for Barcelona, covering attractions, dining, accommodation, and local tips.
+                    </p>
+                    <div class="document-meta">
+                        <div class="document-time"><i class="far fa-clock"></i> 2 days left</div>
+                        <div class="document-category"><i class="fas fa-tags"></i> Travel</div>
+                    </div>
+                    <button class="take-document-btn" onclick="openWritingInterface(4)">
+                        <i class="fas fa-edit"></i> Continue Writing
+                    </button>
+                </div>
+
+                <!-- Document 5 -->
+                <div class="document-card">
+                    <div class="free-badge"><i class="fas fa-check-circle"></i> FREE</div>
+                    <div class="document-header">
+                        <div>
+                            <div class="document-title">Technical Manual</div>
+                            <div class="document-category-badge">Technical Writing</div>
+                        </div>
+                        <div class="document-reward">$120.00</div>
+                    </div>
+                    <div class="document-difficulty">
+                        <div class="difficulty-dot filled"></div>
+                        <div class="difficulty-dot filled"></div>
+                        <div class="difficulty-dot filled"></div>
+                        <div class="difficulty-dot filled"></div>
+                        <div class="difficulty-dot filled"></div>
+                    </div>
+                    <p class="document-description">
+                        Create a user manual for a new software application. Must include installation instructions, features overview, and troubleshooting.
+                    </p>
+                    <div class="document-meta">
+                        <div class="document-time"><i class="far fa-clock"></i> 7 days left</div>
+                        <div class="document-category"><i class="fas fa-tags"></i> Software</div>
+                    </div>
+                    <button class="take-document-btn" onclick="openWritingInterface(5)">
+                        <i class="fas fa-edit"></i> Start Writing
+                    </button>
+                </div>
+
+                <!-- Document 6 -->
+                <div class="document-card">
+                    <div class="free-badge"><i class="fas fa-check-circle"></i> FREE</div>
+                    <div class="document-header">
+                        <div>
+                            <div class="document-title">Social Media Content</div>
+                            <div class="document-category-badge">Content Writing</div>
+                        </div>
+                        <div class="document-reward">$25.00</div>
+                    </div>
+                    <div class="document-difficulty">
+                        <div class="difficulty-dot filled"></div>
+                        <div class="difficulty-dot"></div>
+                        <div class="difficulty-dot"></div>
+                        <div class="difficulty-dot"></div>
+                        <div class="difficulty-dot"></div>
+                    </div>
+                    <p class="document-description">
+                        Create 10 engaging social media posts for a fitness brand, including captions and hashtags for Instagram and Twitter.
+                    </p>
+                    <div class="document-meta">
+                        <div class="document-time"><i class="far fa-clock"></i> 1 day left</div>
+                        <div class="document-category"><i class="fas fa-tags"></i> Marketing</div>
+                    </div>
+                    <button class="take-document-btn" onclick="openWritingInterface(6)">
+                        <i class="fas fa-edit"></i> Start Writing
+                    </button>
+                </div>
+            </div>
+
+            <div class="load-more-section">
+                <div class="counter">Showing 6 of 100 Free Writing Tasks</div>
+                <button class="load-more-btn" onclick="loadMoreWritingTasks()">
+                    <i class="fas fa-redo"></i> Load More Writing Tasks
+                </button>
+            </div>
+        </div>
+
+        <!-- Free Surveys Tab - 100 Free Surveys -->
+        <div class="tab-content" id="free-surveys-tab">
+            <h2 class="page-title">
+                <i class="fas fa-chart-pie"></i>
+                Free Surveys (100 Available) - Earn Money Without Investment
+            </h2>
+
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number">100</div>
+                    <div class="stat-label">Available Surveys</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">3</div>
+                    <div class="stat-label">Completed Today</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">$45.50</div>
+                    <div class="stat-label">Earned from Surveys</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Free Access</div>
+                </div>
+            </div>
+
+            <div class="survey-category">
+                <h3><i class="fas fa-shopping-cart"></i> Consumer Products (25 Surveys)</h3>
+                <div class="documents-grid">
+                    <div class="document-card">
+                        <div class="free-badge"><i class="fas fa-check-circle"></i> FREE</div>
+                        <div class="document-header">
+                            <div>
+                                <div class="document-title">Smartphone Usage Survey</div>
+                            </div>
+                            <div class="document-reward">$5.00</div>
+                        </div>
+                        <p class="document-description">
+                            Share your smartphone usage habits and preferences. 15 questions, takes about 8 minutes.
+                        </p>
+                        <div class="document-meta">
+                            <div class="document-time"><i class="far fa-clock"></i> 10 min</div>
+                            <div class="document-category"><i class="fas fa-users"></i> 250 participants needed</div>
+                        </div>
+                        <button class="take-document-btn" onclick="startSurvey(1)">
+                            <i class="fas fa-play-circle"></i> Start Survey
+                        </button>
+                    </div>
+
+                    <div class="document-card">
+                        <div class="free-badge"><i class="fas fa-check-circle"></i> FREE</div>
+                        <div class="document-header">
+                            <div>
+                                <div class="document-title">Coffee Preferences Study</div>
+                            </div>
+                            <div class="document-reward">$3.50</div>
+                        </div>
+                        <p class="document-description">
+                            Tell us about your coffee drinking habits and brand preferences. 12 questions.
+                        </p>
+                        <div class="document-meta">
+                            <div class="document-time"><i class="far fa-clock"></i> 7 min</div>
+                            <div class="document-category"><i class="fas fa-users"></i> 150 participants needed</div>
+                        </div>
+                        <button class="take-document-btn" onclick="startSurvey(2)">
+                            <i class="fas fa-play-circle"></i> Start Survey
+                        </button>
+                    </div>
+
+                    <div class="document-card">
+                        <div class="free-badge"><i class="fas fa-check-circle"></i> FREE</div>
+                        <div class="document-header">
+                            <div>
+                                <div class="document-title">Home Appliance Feedback</div>
+                            </div>
+                            <div class="document-reward">$6.50</div>
+                        </div>
+                        <p class="document-description">
+                            Provide feedback on your home appliances and what features you value most.
+                        </p>
+                        <div class="document-meta">
+                            <div class="document-time"><i class="far fa-clock"></i> 12 min</div>
+                            <div class="document-category"><i class="fas fa-users"></i> 180 participants needed</div>
+                        </div>
+                        <button class="take-document-btn" onclick="startSurvey(3)">
+                            <i class="fas fa-play-circle"></i> Start Survey
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="survey-category">
+                <h3><i class="fas fa-heartbeat"></i> Health & Lifestyle (25 Surveys)</h3>
+                <div class="documents-grid">
+                    <div class="document-card">
+                        <div class="free-badge"><i class="fas fa-check-circle"></i> FREE</div>
+                        <div class="document-header">
+                            <div>
+                                <div class="document-title">Fitness App Feedback</div>
+                            </div>
+                            <div class="document-reward">$6.00</div>
+                        </div>
+                        <p class="document-description">
+                            Share your experience with fitness apps and what features you find most useful.
+                        </p>
+                        <div class="document-meta">
+                            <div class="document-time"><i class="far fa-clock"></i> 12 min</div>
+                            <div class="document-category"><i class="fas fa-users"></i> 100 participants needed</div>
+                        </div>
+                        <button class="take-document-btn" onclick="startSurvey(4)">
+                            <i class="fas fa-play-circle"></i> Start Survey
+                        </button>
+                    </div>
+
+                    <div class="document-card">
+                        <div class="free-badge"><i class="fas fa-check-circle"></i> FREE</div>
+                        <div class="document-header">
+                            <div>
+                                <div class="document-title">Sleep Patterns Research</div>
+                            </div>
+                            <div class="document-reward">$4.50</div>
+                        </div>
+                        <p class="document-description">
+                            Participate in sleep research by sharing your daily routine and sleep habits.
+                        </p>
+                        <div class="document-meta">
+                            <div class="document-time"><i class="far fa-clock"></i> 9 min</div>
+                            <div class="document-category"><i class="fas fa-users"></i> 300 participants needed</div>
+                        </div>
+                        <button class="take-document-btn" onclick="startSurvey(5)">
+                            <i class="fas fa-play-circle"></i> Start Survey
+                        </button>
+                    </div>
+
+                    <div class="document-card">
+                        <div class="free-badge"><i class="fas fa-check-circle"></i> FREE</div>
+                        <div class="document-header">
+                            <div>
+                                <div class="document-title">Nutrition Habits Study</div>
+                            </div>
+                            <div class="document-reward">$5.50</div>
+                        </div>
+                        <p class="document-description">
+                            Share information about your dietary habits and nutrition preferences.
+                        </p>
+                        <div class="document-meta">
+                            <div class="document-time"><i class="far fa-clock"></i> 11 min</div>
+                            <div class="document-category"><i class="fas fa-users"></i> 200 participants needed</div>
+                        </div>
+                        <button class="take-document-btn" onclick="startSurvey(6)">
+                            <i class="fas fa-play-circle"></i> Start Survey
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="survey-category">
+                <h3><i class="fas fa-briefcase"></i> Career & Education (25 Surveys)</h3>
+                <div class="documents-grid">
+                    <div class="document-card">
+                        <div class="free-badge"><i class="fas fa-check-circle"></i> FREE</div>
+                        <div class="document-header">
+                            <div>
+                                <div class="document-title">Remote Work Experience</div>
+                            </div>
+                            <div class="document-reward">$7.50</div>
+                        </div>
+                        <p class="document-description">
+                            Share your experience with remote work and what tools you use to stay productive.
+                        </p>
+                        <div class="document-meta">
+                            <div class="document-time"><i class="far fa-clock"></i> 15 min</div>
+                            <div class="document-category"><i class="fas fa-users"></i> 200 participants needed</div>
+                        </div>
+                        <button class="take-document-btn" onclick="startSurvey(7)">
+                            <i class="fas fa-play-circle"></i> Start Survey
+                        </button>
+                    </div>
+
+                    <div class="document-card">
+                        <div class="free-badge"><i class="fas fa-check-circle"></i> FREE</div>
+                        <div class="document-header">
+                            <div>
+                                <div class="document-title">Online Learning Preferences</div>
+                            </div>
+                            <div class="document-reward">$5.50</div>
+                        </div>
+                        <p class="document-description">
+                            Tell us about your experience with online courses and what platforms you prefer.
+                        </p>
+                        <div class="document-meta">
+                            <div class="document-time"><i class="far fa-clock"></i> 11 min</div>
+                            <div class="document-category"><i class="fas fa-users"></i> 180 participants needed</div>
+                        </div>
+                        <button class="take-document-btn" onclick="startSurvey(8)">
+                            <i class="fas fa-play-circle"></i> Start Survey
+                        </button>
+                    </div>
+
+                    <div class="document-card">
+                        <div class="free-badge"><i class="fas fa-check-circle"></i> FREE</div>
+                        <div class="document-header">
+                            <div>
+                                <div class="document-title">Job Satisfaction Research</div>
+                            </div>
+                            <div class="document-reward">$8.00</div>
+                        </div>
+                        <p class="document-description">
+                            Participate in job satisfaction research across various industries.
+                        </p>
+                        <div class="document-meta">
+                            <div class="document-time"><i class="far fa-clock"></i> 14 min</div>
+                            <div class="document-category"><i class="fas fa-users"></i> 250 participants needed</div>
+                        </div>
+                        <button class="take-document-btn" onclick="startSurvey(9)">
+                            <i class="fas fa-play-circle"></i> Start Survey
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="load-more-section">
+                <div class="counter">Showing 9 of 100 Free Surveys</div>
+                <button class="load-more-btn" onclick="loadMoreFreeSurveys()">
+                    <i class="fas fa-redo"></i> Load More Surveys
+                </button>
+            </div>
+        </div>
+
+        <!-- Premium Content Tab - 100 Premium Surveys & 100 Premium Writing Tasks -->
+        <div class="tab-content" id="premium-tab">
+            <h2 class="page-title">
+                <i class="fas fa-crown"></i>
+                Premium Content - 100 Surveys & 100 Writing Tasks
+            </h2>
+
+            <div class="stats">
+                <div class="stat-card">
+                    <div class="stat-number">100</div>
+                    <div class="stat-label">Premium Surveys</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">100</div>
+                    <div class="stat-label">Premium Writing Tasks</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">$10,000+</div>
+                    <div class="stat-label">Potential Earnings</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">Ksh 100</div>
+                    <div class="stat-label">Access Fee</div>
+                </div>
+            </div>
+
+            <div class="fee-explanation" style="margin-bottom: 30px;">
+                <h4>
+                    <i class="fas fa-lock"></i>
+                    Premium Access Required - Ksh 100
+                </h4>
+                <p>Unlock high-paying premium content with a one-time payment of Ksh 100. This gives you access to:</p>
+                <ul>
+                    <li><strong>100 Premium Surveys:</strong> Earn $15-$100 per survey</li>
+                    <li><strong>100 Premium Writing Tasks:</strong> High-paying document writing opportunities ($100-$500 each)</li>
+                    <li><strong>Exclusive Market Research:</strong> Participate in paid focus groups ($50-$200 each)</li>
+                    <li><strong>Product Testing:</strong> Get paid to test new products ($75-$300 + keep products)</li>
+                    <li><strong>Priority Support:</strong> Dedicated customer service</li>
+                </ul>
+                <div class="benefit-item">
+                    <i class="fas fa-shield-alt benefit-icon"></i>
+                    <div>
+                        <strong>100% Money-Back Guarantee:</strong> If you don't earn at least Ksh 1,000 in your first month, we'll refund your access fee!
+                    </div>
+                </div>
+            </div>
+
+            <div class="survey-category">
+                <h3><i class="fas fa-chart-line"></i> Premium Market Research Surveys (100 Available)</h3>
+                <div class="documents-grid">
+                    <div class="document-card premium-card">
+                        <div class="premium-badge"><i class="fas fa-crown"></i> PREMIUM</div>
+                        <div class="document-header">
+                            <div>
+                                <div class="document-title">Financial Services Survey</div>
+                            </div>
+                            <div class="document-reward">$45.00</div>
+                        </div>
+                        <p class="document-description">
+                            Exclusive survey for banking and investment professionals. 45-minute detailed questionnaire about financial trends.
+                        </p>
+                        <div class="document-meta">
+                            <div class="document-time"><i class="far fa-clock"></i> 45 min</div>
+                            <div class="document-category"><i class="fas fa-user-tie"></i> Professionals only</div>
+                        </div>
+                        <button class="payment-required-btn" onclick="requestPremiumAccess('survey', 1)">
+                            <i class="fas fa-lock"></i> Pay Ksh 100 to Access
+                        </button>
+                    </div>
+
+                    <div class="document-card premium-card">
+                        <div class="premium-badge"><i class="fas fa-crown"></i> PREMIUM</div>
+                        <div class="document-header">
+                            <div>
+                                <div class="document-title">Medical Device Feedback</div>
+                            </div>
+                            <div class="document-reward">$75.00</div>
+                        </div>
+                        <p class="document-description">
+                            For healthcare professionals only. Provide feedback on new medical equipment. Strict confidentiality required.
+                        </p>
+                        <div class="document-meta">
+                            <div class="document-time"><i class="far fa-clock"></i> 60 min</div>
+                            <div class="document-category"><i class="fas fa-user-md"></i> Healthcare only</div>
+                        </div>
+                        <button class="payment-required-btn" onclick="requestPremiumAccess('survey', 2)">
+                            <i class="fas fa-lock"></i> Pay Ksh 100 to Access
+                        </button>
+                    </div>
+
+                    <div class="document-card premium-card">
+                        <div class="premium-badge"><i class="fas fa-crown"></i> PREMIUM</div>
+                        <div class="document-header">
+                            <div>
+                                <div class="document-title">Automotive Industry Study</div>
+                            </div>
+                            <div class="document-reward">$65.00</div>
+                        </div>
+                        <p class="document-description">
+                            For automotive industry professionals. Survey about electric vehicles and future trends.
+                        </p>
+                        <div class="document-meta">
+                            <div class="document-time"><i class="far fa-clock"></i> 50 min</div>
+                            <div class="document-category"><i class="fas fa-car"></i> Automotive professionals</div>
+                        </div>
+                        <button class="payment-required-btn" onclick="requestPremiumAccess('survey', 3)">
+                            <i class="fas fa-lock"></i> Pay Ksh 100 to Access
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="survey-category">
+                <h3><i class="fas fa-pen-fancy"></i> Premium Writing Tasks (100 Available)</h3>
+                <div class="documents-grid">
+                    <div class="document-card premium-card">
+                        <div class="premium-badge"><i class="fas fa-crown"></i> PREMIUM</div>
+                        <div class="document-header">
+                            <div>
+                                <div class="document-title">Legal Document Review</div>
+                                <div class="document-category-badge">Legal Writing</div>
+                            </div>
+                            <div class="document-reward">$250.00</div>
+                        </div>
+                        <p class="document-description">
+                            Review and summarize complex legal documents. Requires legal background or experience.
+                        </p>
+                        <div class="document-meta">
+                            <div class="document-time"><i class="far fa-clock"></i> 7 days left</div>
+                            <div class="document-category"><i class="fas fa-graduation-cap"></i> Specialized</div>
+                        </div>
+                        <button class="payment-required-btn" onclick="requestPremiumAccess('writing', 1)">
+                            <i class="fas fa-lock"></i> Pay Ksh 100 to Access
+                        </button>
+                    </div>
+
+                    <div class="document-card premium-card">
+                        <div class="premium-badge"><i class="fas fa-crown"></i> PREMIUM</div>
+                        <div class="document-header">
+                            <div>
+                                <div class="document-title">Technical Whitepaper</div>
+                                <div class="document-category-badge">Technical Writing</div>
+                            </div>
+                            <div class="document-reward">$400.00</div>
+                        </div>
+                        <p class="document-description">
+                            Write a technical whitepaper on blockchain applications in supply chain management.
+                        </p>
+                        <div class="document-meta">
+                            <div class="document-time"><i class="far fa-clock"></i> 14 days left</div>
+                            <div class="document-category"><i class="fas fa-code"></i> Technical</div>
+                        </div>
+                        <button class="payment-required-btn" onclick="requestPremiumAccess('writing', 2)">
+                            <i class="fas fa-lock"></i> Pay Ksh 100 to Access
+                        </button>
+                    </div>
+
+                    <div class="document-card premium-card">
+                        <div class="premium-badge"><i class="fas fa-crown"></i> PREMIUM</div>
+                        <div class="document-header">
+                            <div>
+                                <div class="document-title">Medical Research Paper</div>
+                                <div class="document-category-badge">Medical Writing</div>
+                            </div>
+                            <div class="document-reward">$500.00</div>
+                        </div>
+                        <p class="document-description">
+                            Write a research paper on recent medical advances. Requires medical or scientific background.
+                        </p>
+                        <div class="document-meta">
+                            <div class="document-time"><i class="far fa-clock"></i> 21 days left</div>
+                            <div class="document-category"><i class="fas fa-stethoscope"></i> Medical professionals</div>
+                        </div>
+                        <button class="payment-required-btn" onclick="requestPremiumAccess('writing', 3)">
+                            <i class="fas fa-lock"></i> Pay Ksh 100 to Access
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="survey-category">
+                <h3><i class="fas fa-vial"></i> Product Testing Opportunities (Included in Premium)</h3>
+                <div class="documents-grid">
+                    <div class="document-card premium-card">
+                        <div class="premium-badge"><i class="fas fa-crown"></i> PREMIUM</div>
+                        <div class="document-header">
+                            <div>
+                                <div class="document-title">Smart Home Device Testing</div>
+                            </div>
+                            <div class="document-reward">$150.00 + Product</div>
+                        </div>
+                        <p class="document-description">
+                            Test and review a new smart home device. Keep the product plus earn $150 for detailed feedback.
+                        </p>
+                        <div class="document-meta">
+                            <div class="document-time"><i class="far fa-clock"></i> 30 days testing</div>
+                            <div class="document-category"><i class="fas fa-home"></i> Homeowners only</div>
+                        </div>
+                        <button class="payment-required-btn" onclick="requestPremiumAccess('testing', 1)">
+                            <i class="fas fa-lock"></i> Pay Ksh 100 to Access
+                        </button>
+                    </div>
+
+                    <div class="document-card premium-card">
+                        <div class="premium-badge"><i class="fas fa-crown"></i> PREMIUM</div>
+                        <div class="document-header">
+                            <div>
+                                <div class="document-title">Mobile App Beta Testing</div>
+                            </div>
+                            <div class="document-reward">$100.00</div>
+                        </div>
+                        <p class="document-description">
+                            Beta test a new productivity app. Provide detailed feedback on bugs, features, and user experience.
+                        </p>
+                        <div class="document-meta">
+                            <div class="document-time"><i class="far fa-clock"></i> 14 days testing</div>
+                            <div class="document-category"><i class="fas fa-mobile-alt"></i> Tech savvy users</div>
+                        </div>
+                        <button class="payment-required-btn" onclick="requestPremiumAccess('testing', 2)">
+                            <i class="fas fa-lock"></i> Pay Ksh 100 to Access
+                        </button>
+                    </div>
+
+                    <div class="document-card premium-card">
+                        <div class="premium-badge"><i class="fas fa-crown"></i> PREMIUM</div>
+                        <div class="document-header">
+                            <div>
+                                <div class="document-title">Cosmetics Product Testing</div>
+                            </div>
+                            <div class="document-reward">$75.00 + Products</div>
+                        </div>
+                        <p class="document-description">
+                            Test new cosmetic products and provide detailed feedback on quality, packaging, and user experience.
+                        </p>
+                        <div class="document-meta">
+                            <div class="document-time"><i class="far fa-clock"></i> 21 days testing</div>
+                            <div class="document-category"><i class="fas fa-spa"></i> Beauty enthusiasts</div>
+                        </div>
+                        <button class="payment-required-btn" onclick="requestPremiumAccess('testing', 3)">
+                            <i class="fas fa-lock"></i> Pay Ksh 100 to Access
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="load-more-section">
+                <div class="counter">Showing 6 of 100 Premium Surveys & 6 of 100 Premium Writing Tasks</div>
+                <button class="load-more-btn" onclick="loadMorePremiumContent()">
+                    <i class="fas fa-redo"></i> Load More Premium Content
+                </button>
+            </div>
+        </div>
+
+        <!-- Writing Interface Tab -->
+        <div class="tab-content" id="writing-tab">
+            <h2 class="page-title">
+                <i class="fas fa-edit"></i>
+                Writing Interface
+            </h2>
+
+            <div class="writing-interface">
+                <div class="writing-header">
+                    <div class="writing-title">Product Review Blog Post</div>
+                    <div class="writing-info">
+                        <div class="word-count">
+                            <i class="fas fa-font"></i>
+                            <span id="wordCount">0</span> words
+                        </div>
+                        <div class="time-left">
+                            <i class="far fa-clock"></i>
+                            3 days left
+                        </div>
+                    </div>
+                </div>
+
+                <textarea class="writing-area" id="writingArea" placeholder="Start writing your document here..."></textarea>
+
+                <div class="writing-actions">
+                    <button class="action-btn save-btn">
+                        <i class="far fa-save"></i> Save Draft
+                    </button>
+                    <button class="action-btn submit-btn">
+                        <i class="fas fa-paper-plane"></i> Submit for Review
+                    </button>
+                </div>
+            </div>
+
+            <div class="document-card" style="margin-top: 30px;">
+                <div class="document-header">
+                    <div>
+                        <div class="document-title">Writing Guidelines</div>
+                    </div>
+                </div>
+                <p class="document-description">
+                    • Write in a conversational tone suitable for a tech blog<br>
+                    • Include at least 3 product images (placeholders are fine)<br>
+                    • Minimum 1200 words<br>
+                    • Focus on camera features, battery life, and value for money<br>
+                    • Include a pros and cons section<br>
+                    • Add a conclusion with recommendation
+                </p>
+            </div>
+        </div>
+
+        <!-- Earnings History Tab -->
+        <div class="tab-content" id="earnings-tab">
+            <h2 class="page-title">
+                <i class="fas fa-chart-line"></i>
+                Earnings History
+            </h2>
+
+            <div class="earnings-history">
+                <div class="document-header">
+                    <div>
+                        <div class="document-title">Your Writing Earnings</div>
+                    </div>
+                    <div class="document-reward">Total: $325.50</div>
+                </div>
+
+                <table class="earnings-table">
+                    <thead>
+                        <tr>
+                            <th>Document</th>
+                            <th>Submitted</th>
+                            <th>Status</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Company Newsletter</td>
+                            <td>Oct 12, 2023</td>
+                            <td><span class="status-badge status-paid">Paid</span></td>
+                            <td>$35.00</td>
+                        </tr>
+                        <tr>
+                            <td>Tech Product Review</td>
+                            <td>Oct 5, 2023</td>
+                            <td><span class="status-badge status-paid">Paid</span></td>
+                            <td>$50.00</td>
+                        </tr>
+                        <tr>
+                            <td>Academic Paper Summary</td>
+                            <td>Sep 28, 2023</td>
+                            <td><span class="status-badge status-paid">Paid</span></td>
+                            <td>$75.00</td>
+                        </tr>
+                        <tr>
+                            <td>Marketing Campaign</td>
+                            <td>Sep 20, 2023</td>
+                            <td><span class="status-badge status-paid">Paid</span></td>
+                            <td>$65.00</td>
+                        </tr>
+                        <tr>
+                            <td>Travel Guide Article</td>
+                            <td>Oct 15, 2023</td>
+                            <td><span class="status-badge status-approved">Approved</span></td>
+                            <td>$60.00</td>
+                        </tr>
+                        <tr>
+                            <td>Social Media Content</td>
+                            <td>Oct 18, 2023</td>
+                            <td><span class="status-badge status-pending">Pending</span></td>
+                            <td>$25.00</td>
+                        </tr>
+                        <tr>
+                            <td>Technical Manual</td>
+                            <td>In Progress</td>
+                            <td><span class="status-badge status-pending">Writing</span></td>
+                            <td>$120.00</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Wallet Tab -->
+        <div class="tab-content" id="wallet-tab">
+            <h2 class="page-title">
+                <i class="fas fa-wallet"></i>
+                My Wallet
+            </h2>
+
+            <div class="wallet-container">
+                <div class="wallet-card">
+                    <div class="wallet-header">
+                        <div class="wallet-title">Balance Overview</div>
+                    </div>
+                    <div class="total-balance">$142.75</div>
+                    <div class="balance-breakdown">
+                        <div class="balance-item available">
+                            <div class="balance-amount">$87.25</div>
+                            <div class="balance-label">Available</div>
+                        </div>
+                        <div class="balance-item pending">
+                            <div class="balance-amount">$55.50</div>
+                            <div class="balance-label">Pending</div>
+                        </div>
+                    </div>
+
+                    <!-- Fee Explanation Section -->
+                    <div class="fee-explanation">
+                        <h4>
+                            <i class="fas fa-info-circle"></i>
+                            Why We Charge Ksh 100 Withdrawal Fee
+                        </h4>
+                        <p>This small fee helps us maintain and improve our platform while ensuring you receive the best service:</p>
+                        <ul>
+                            <li><strong>Transaction Processing:</strong> Covers M-Pesa transaction costs and banking fees</li>
+                            <li><strong>Platform Maintenance:</strong> Helps maintain server infrastructure and security</li>
+                            <li><strong>Customer Support:</strong> Funds our 24/7 support team to assist you</li>
+                            <li><strong>Fraud Prevention:</strong> Supports our secure payment verification systems</li>
+                            <li><strong>Service Development:</strong> Enables us to add new features and improve your experience</li>
+                        </ul>
+                        <div class="benefit-item">
+                            <i class="fas fa-shield-alt benefit-icon"></i>
+                            <div>
+                                <strong>Secure Transactions:</strong> Your payments are protected with bank-level security
+                            </div>
+                        </div>
+                        <div class="benefit-item">
+                            <i class="fas fa-bolt benefit-icon"></i>
+                            <div>
+                                <strong>Fast Processing:</strong> Withdrawals are processed within 24 hours
+                            </div>
+                        </div>
+                        <div class="benefit-item">
+                            <i class="fas fa-headset benefit-icon"></i>
+                            <div>
+                                <strong>Dedicated Support:</strong> Get help whenever you need it
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="payout-threshold">
+                        <p><i class="fas fa-info-circle"></i> <strong>Withdrawal Information</strong></p>
+                        <p>Withdrawal fee: Ksh 100 (covers transaction processing and platform maintenance)</p>
+                        <p>Minimum withdrawal: $25.00</p>
+                        <p>Next payout date: 5th of next month</p>
+                    </div>
+
+                    <div class="wallet-header">
+                        <div class="wallet-title">Withdraw Funds</div>
+                    </div>
+                    
+                    <div class="payment-methods">
+                        <div class="payment-method" data-method="paypal">
+                            <i class="fab fa-paypal payment-icon"></i>
+                            <div class="payment-name">PayPal</div>
+                            <div class="payment-fee">Fee: 2.9% + $0.30</div>
+                        </div>
+                        <div class="payment-method" data-method="bank">
+                            <i class="fas fa-university payment-icon"></i>
+                            <div class="payment-name">Bank Transfer</div>
+                            <div class="payment-fee">Fee: $1.50</div>
+                        </div>
+                        <div class="payment-method active" data-method="mpesa">
+                            <i class="fas fa-mobile-alt payment-icon"></i>
+                            <div class="payment-name">M-Pesa</div>
+                            <div class="payment-fee">Fee: Ksh 100</div>
+                        </div>
+                    </div>
+
+                    <div class="withdraw-section">
+                        <div class="wallet-header" style="margin-top: 20px;">
+                            <div class="wallet-title">Withdrawal Amount</div>
+                        </div>
+                        <div style="display: flex; gap: 10px; margin-top: 15px;">
+                            <input type="number" id="withdrawAmount" placeholder="Enter amount" min="25" max="87.25" step="0.01" style="flex: 1; padding: 12px; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 1rem;">
+                            <button id="maxAmount" style="padding: 12px 20px; background: #e9ecef; border: none; border-radius: 10px; cursor: pointer; font-weight: 600;">Max</button>
+                        </div>
+                        <button class="withdraw-btn" id="withdrawButton">
+                            <i class="fas fa-money-bill-wave"></i> Proceed to Payment
+                        </button>
+                    </div>
+                </div>
+
+                <div class="wallet-card">
+                    <div class="wallet-header">
+                        <div class="wallet-title">Transaction History</div>
+                    </div>
+                    <table class="transactions-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Description</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Oct 15, 2023</td>
+                                <td>Withdrawal to M-Pesa</td>
+                                <td class="amount-negative">-$50.00</td>
+                                <td><span class="status-badge status-paid">Completed</span></td>
+                            </tr>
+                            <tr>
+                                <td>Oct 10, 2023</td>
+                                <td>Technical Manual</td>
+                                <td class="amount-positive">+$120.00</td>
+                                <td><span class="status-badge status-paid">Paid</span></td>
+                            </tr>
+                            <tr>
+                                <td>Oct 5, 2023</td>
+                                <td>Travel Guide Article</td>
+                                <td class="amount-positive">+$60.00</td>
+                                <td><span class="status-badge status-pending">Pending</span></td>
+                            </tr>
+                            <tr>
+                                <td>Oct 1, 2023</td>
+                                <td>Withdrawal to Bank</td>
+                                <td class="amount-negative">-$75.00</td>
+                                <td><span class="status-badge status-paid">Completed</span></td>
+                            </tr>
+                            <tr>
+                                <td>Sep 28, 2023</td>
+                                <td>Academic Paper Summary</td>
+                                <td class="amount-positive">+$75.00</td>
+                                <td><span class="status-badge status-paid">Paid</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- M-Pesa Payment Section -->
+            <div class="mpesa-payment-section" id="mpesaPaymentSection">
+                <div class="mpesa-header">
+                    <i class="fas fa-mobile-alt" style="font-size: 1.5rem;"></i>
+                    <h3>M-Pesa Payment Verification</h3>
+                </div>
+
+                <div class="fee-explanation" style="margin: 20px 0;">
+                    <h4>
+                        <i class="fas fa-hand-holding-usd"></i>
+                        About the Ksh 100 Processing Fee
+                    </h4>
+                    <p>This fee ensures:</p>
+                    <ul>
+                        <li>Secure and instant payment processing</li>
+                        <li>24/7 platform availability</li>
+                        <li>Dedicated customer support</li>
+                        <li>Continuous platform improvements</li>
+                        <li>Fraud protection and security measures</li>
+                    </ul>
+                    <p><strong>Thank you for supporting our platform!</strong></p>
+                </div>
+
+                <p>To complete your withdrawal, please follow these steps:</p>
+                
+                <ol class="mpesa-steps">
+                    <li>Go to your M-Pesa menu on your phone</li>
+                    <li>Select <strong>Lipa Na M-Pesa</strong></li>
+                    <li>Select <strong>Pay Bill</strong></li>
+                    <li>Enter the following details:</li>
+                </ol>
+
+                <div class="mpesa-details">
+                    <p><strong>Business No:</strong> 200999</p>
+                    <p><strong>Account No:</strong> 0051060106641</p>
+                    <p><strong>Amount:</strong> Ksh 100 (Processing Fee)</p>
+                </div>
+
+                <p>After completing the payment, you will receive a confirmation message from M-Pesa. Paste the entire message below:</p>
+
+                <div class="message-example">
+                    Example: "KM49DEQ32 Confirmed. Ksh100.00 sent to PayBill 200999 for account 0051060106641 on 25/10/2023 at 4:15 PM. New M-PESA balance is Ksh2,450.00. Transaction cost, Ksh0.00. Amount you can transact within the day is 299,900.00. To reverse, forward this message to 456."
+                </div>
+
+                <textarea class="mpesa-message-input" id="mpesaMessageInput" placeholder="Paste your M-Pesa confirmation message here..."></textarea>
+
+                <div id="validationMessage"></div>
+
+                <button class="verify-btn" id="verifyMpesaButton">
+                    <i class="fas fa-check-circle"></i> Verify Payment & Complete Withdrawal
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Modal -->
+    <div class="payment-modal" id="paymentModal">
+        <div class="payment-modal-content">
+            <span class="close-modal" onclick="closePaymentModal()">&times;</span>
+            <h2><i class="fas fa-lock"></i> Premium Access Payment</h2>
+            
+            <div class="fee-explanation" style="margin: 20px 0;">
+                <h4><i class="fas fa-crown"></i> Unlock Premium Content</h4>
+                <p>Pay <strong>Ksh 100</strong> once to access all premium content including:</p>
+                <ul>
+                    <li><strong>100 Premium Surveys:</strong> Earn $15-$100 each</li>
+                    <li><strong>100 Premium Writing Tasks:</strong> Earn $100-$500 each</li>
+                    <li><strong>Product Testing Opportunities:</strong> Earn $75-$300 + keep products</li>
+                    <li><strong>Exclusive Market Research:</strong> Earn $50-$200 for focus groups</li>
+                </ul>
+                <p><strong>Total Potential Earnings:</strong> $10,000+ from premium content</p>
+                <p><strong>Money-Back Guarantee:</strong> If you don't earn at least Ksh 1,000 in your first month, we'll refund your fee!</p>
+            </div>
+
+            <div class="payment-options">
+                <div class="payment-option selected" onclick="selectPaymentOption('mpesa')">
+                    <h4><i class="fas fa-mobile-alt"></i> M-Pesa</h4>
+                    <p>Pay Ksh 100 via M-Pesa PayBill</p>
+                </div>
+            </div>
+
+            <div id="mpesaPaymentInstructions" style="display: block;">
+                <h4><i class="fas fa-mobile-alt"></i> M-Pesa Payment Instructions</h4>
+                <ol style="margin: 15px 0 15px 20px;">
+                    <li>Go to M-Pesa on your phone</li>
+                    <li>Select <strong>Lipa Na M-Pesa</strong></li>
+                    <li>Select <strong>Pay Bill</strong></li>
+                    <li>Enter Business No: <strong>200999</strong></li>
+                    <li>Enter Account No: <strong>0051060106641</strong></li>
+                    <li>Enter Amount: <strong>Ksh 100</strong></li>
+                    <li>Enter your M-Pesa PIN</li>
+                    <li>Click OK to complete payment</li>
+                </ol>
+                
+                <div class="mpesa-details" style="margin: 20px 0;">
+                    <p><strong>Business No:</strong> 200999</p>
+                    <p><strong>Account No:</strong> 0051060106641</p>
+                    <p><strong>Amount:</strong> Ksh 100</p>
+                </div>
+
+                <p>After payment, paste your M-Pesa confirmation message below:</p>
+                <textarea id="premiumMpesaMessage" placeholder="Paste M-Pesa confirmation message here..." style="width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; min-height: 100px;"></textarea>
+                
+                <div id="premiumValidationMessage"></div>
+                
+                <button class="verify-btn" onclick="verifyPremiumPayment()" style="margin-top: 20px;">
+                    <i class="fas fa-check-circle"></i> Verify Payment & Unlock Premium
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab navigation
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs and contents
+                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked tab
+                tab.classList.add('active');
+                
+                // Show corresponding content
+                const tabId = tab.getAttribute('data-tab');
+                document.getElementById(`${tabId}-tab`).classList.add('active');
+            });
+        });
+
+        // Payment method selection
+        document.querySelectorAll('.payment-method').forEach(method => {
+            method.addEventListener('click', () => {
+                document.querySelectorAll('.payment-method').forEach(m => m.classList.remove('active'));
+                method.classList.add('active');
+            });
+        });
+
+        // Max amount button
+        document.getElementById('maxAmount').addEventListener('click', () => {
+            document.getElementById('withdrawAmount').value = '87.25';
+        });
+
+        // Withdraw button functionality
+        document.getElementById('withdrawButton').addEventListener('click', () => {
+            const amount = parseFloat(document.getElementById('withdrawAmount').value);
+            const availableBalance = 87.25;
+            const minWithdrawal = 25.00;
+            
+            if (!amount || amount < minWithdrawal) {
+                alert(`Minimum withdrawal amount is $${minWithdrawal.toFixed(2)}`);
+                return;
+            }
+            
+            if (amount > availableBalance) {
+                alert(`You cannot withdraw more than your available balance of $${availableBalance.toFixed(2)}`);
+                return;
+            }
+            
+            const selectedMethod = document.querySelector('.payment-method.active').getAttribute('data-method');
+            
+            if (selectedMethod === 'mpesa') {
+                // Show M-Pesa payment section
+                document.getElementById('mpesaPaymentSection').style.display = 'block';
+                
+                // Scroll to the M-Pesa section
+                document.getElementById('mpesaPaymentSection').scrollIntoView({ behavior: 'smooth' });
+            } else {
+                const methodNames = {
+                    'paypal': 'PayPal',
+                    'bank': 'Bank Transfer'
+                };
+                
+                if (confirm(`Are you sure you want to withdraw $${amount.toFixed(2)} to your ${methodNames[selectedMethod]} account?`)) {
+                    alert(`Withdrawal request submitted! $${amount.toFixed(2)} will be processed within 3-5 business days.`);
+                    document.getElementById('withdrawAmount').value = '';
+                }
+            }
+        });
+
+        // M-Pesa message validation
+        document.getElementById('verifyMpesaButton').addEventListener('click', () => {
+            const mpesaMessage = document.getElementById('mpesaMessageInput').value.trim();
+            const validationMessage = document.getElementById('validationMessage');
+            
+            // Clear previous validation message
+            validationMessage.innerHTML = '';
+            validationMessage.className = 'validation-message';
+            
+            // Check if message is empty
+            if (!mpesaMessage) {
+                validationMessage.textContent = 'Please paste your M-Pesa confirmation message.';
+                validationMessage.classList.add('validation-error');
+                return;
+            }
+            
+            // Check for required components in the message
+            const hasPayBill = mpesaMessage.includes('200999');
+            const hasAccount = mpesaMessage.includes('0051060106641');
+            const hasAmount = mpesaMessage.includes('Ksh100') || mpesaMessage.includes('Ksh 100') || 
+                             mpesaMessage.includes('100.00') || mpesaMessage.includes('100.00');
+            
+            if (hasPayBill && hasAccount && hasAmount) {
+                validationMessage.textContent = 'Payment verified successfully! Your withdrawal has been processed.';
+                validationMessage.classList.add('validation-success');
+                
+                // In a real application, you would process the withdrawal here
+                setTimeout(() => {
+                    alert('Withdrawal successful! Your funds will be available in your M-Pesa account shortly. Thank you for your continued support!');
+                    document.getElementById('mpesaMessageInput').value = '';
+                    document.getElementById('withdrawAmount').value = '';
+                    document.getElementById('mpesaPaymentSection').style.display = 'none';
+                    
+                    // Update balance
+                    const amount = parseFloat(document.getElementById('withdrawAmount').value || '0');
+                    if (amount > 0) {
+                        const currentBalance = parseFloat(document.querySelector('.balance').textContent.replace('$', ''));
+                        const newBalance = currentBalance - amount;
+                        document.querySelector('.balance').textContent = `$${newBalance.toFixed(2)}`;
+                        
+                        const availableBalance = parseFloat(document.querySelector('.available .balance-amount').textContent.replace('$', ''));
+                        const newAvailable = availableBalance - amount;
+                        document.querySelector('.available .balance-amount').textContent = `$${newAvailable.toFixed(2)}`;
+                    }
+                }, 1500);
+            } else {
+                validationMessage.textContent = 'Please paste the correct M-Pesa confirmation message. Make sure it contains the correct PayBill number (200999), account number (0051060106641), and amount (Ksh 100).';
+                validationMessage.classList.add('validation-error');
+            }
+        });
+
+        // Real-time validation as user types
+        document.getElementById('mpesaMessageInput').addEventListener('input', function() {
+            const mpesaMessage = this.value.trim();
+            const validationMessage = document.getElementById('validationMessage');
+            
+            // Clear validation message when user starts typing
+            if (mpesaMessage.length > 0) {
+                validationMessage.innerHTML = '';
+                validationMessage.className = 'validation-message';
+            }
+        });
+
+        // Word count functionality
+        const writingArea = document.getElementById('writingArea');
+        const wordCount = document.getElementById('wordCount');
+        
+        if (writingArea && wordCount) {
+            writingArea.addEventListener('input', () => {
+                const text = writingArea.value.trim();
+                const words = text === '' ? 0 : text.split(/\s+/).length;
+                wordCount.textContent = words;
+            });
+        }
+
+        // Open writing interface
+        function openWritingInterface(docId) {
+            // Switch to writing tab
+            document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            
+            document.querySelector('[data-tab="writing"]').classList.add('active');
+            document.getElementById('writing-tab').classList.add('active');
+            
+            // In a real app, you would load the specific document data here
+            alert(`Loading document #${docId} in the writing interface. In a real application, this would load the specific document requirements and any saved drafts.`);
+        }
+
+        // Simulate saving and submitting
+        const saveBtn = document.querySelector('.save-btn');
+        const submitBtn = document.querySelector('.submit-btn');
+        
+        if (saveBtn) {
+            saveBtn.addEventListener('click', () => {
+                alert('Draft saved successfully!');
+            });
+        }
+        
+        if (submitBtn) {
+            submitBtn.addEventListener('click', () => {
+                const wordCount = document.getElementById('wordCount') ? document.getElementById('wordCount').textContent : '0';
+                if (parseInt(wordCount) < 100) {
+                    alert('Please write at least 100 words before submitting.');
+                    return;
+                }
+                
+                if (confirm('Are you sure you want to submit this document for review?')) {
+                    alert('Document submitted successfully! It will be reviewed within 3-5 business days.');
+                }
+            });
+        }
+
+        // Survey functions
+        function startSurvey(surveyId) {
+            alert(`Starting Survey #${surveyId}. This would open the survey interface in a real application.`);
+        }
+
+        // Premium access functions
+        let currentPremiumItem = null;
+        let currentPremiumType = null;
+
+        function requestPremiumAccess(type, itemId) {
+            currentPremiumType = type;
+            currentPremiumItem = itemId;
+            document.getElementById('paymentModal').style.display = 'flex';
+        }
+
+        function closePaymentModal() {
+            document.getElementById('paymentModal').style.display = 'none';
+            document.getElementById('premiumMpesaMessage').value = '';
+            document.getElementById('premiumValidationMessage').innerHTML = '';
+        }
+
+        function selectPaymentOption(option) {
+            document.querySelectorAll('.payment-option').forEach(el => {
+                el.classList.remove('selected');
+            });
+            event.currentTarget.classList.add('selected');
+        }
+
+        function verifyPremiumPayment() {
+            const mpesaMessage = document.getElementById('premiumMpesaMessage').value.trim();
+            const validationMessage = document.getElementById('premiumValidationMessage');
+            
+            validationMessage.innerHTML = '';
+            validationMessage.className = 'validation-message';
+            
+            if (!mpesaMessage) {
+                validationMessage.textContent = 'Please paste your M-Pesa confirmation message.';
+                validationMessage.classList.add('validation-error');
+                return;
+            }
+            
+            // Check for required components in the message
+            const hasPayBill = mpesaMessage.includes('200999');
+            const hasAccount = mpesaMessage.includes('0051060106641');
+            const hasAmount = mpesaMessage.includes('Ksh100') || mpesaMessage.includes('Ksh 100') || 
+                             mpesaMessage.includes('100.00') || mpesaMessage.includes('100.00');
+            
+            if (hasPayBill && hasAccount && hasAmount) {
+                validationMessage.textContent = 'Payment verified successfully! Unlocking premium content...';
+                validationMessage.classList.add('validation-success');
+                
+                setTimeout(() => {
+                    alert('Premium access granted! You now have access to:\n• 100 Premium Surveys ($15-$100 each)\n• 100 Premium Writing Tasks ($100-$500 each)\n• Product Testing Opportunities\n• Exclusive Market Research');
+                    closePaymentModal();
+                    
+                    // Update all premium buttons
+                    updatePremiumButtons();
+                    
+                    // Store premium access in localStorage
+                    localStorage.setItem('premiumAccess', 'granted');
+                    localStorage.setItem('premiumUnlocked', 'true');
+                }, 1500);
+            } else {
+                validationMessage.textContent = 'Invalid M-Pesa message. Please ensure you paid to Business No: 200999, Account No: 0051060106641, Amount: Ksh 100';
+                validationMessage.classList.add('validation-error');
+            }
+        }
+
+        // Load more content functions
+        function loadMoreWritingTasks() {
+            alert('Loading more writing tasks...\n\nIn a real application, this would load additional writing tasks from a database of 100+ free writing opportunities.');
+        }
+
+        function loadMoreFreeSurveys() {
+            alert('Loading more free surveys...\n\nIn a real application, this would load additional surveys from a database of 100+ free surveys.');
+        }
+
+        function loadMorePremiumContent() {
+            alert('Loading more premium content...\n\nIn a real application, this would load:\n• More of 100 premium surveys\n• More of 100 premium writing tasks\n• Additional product testing opportunities');
+        }
+
+        // Check for existing premium access on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            if (localStorage.getItem('premiumAccess') === 'granted') {
+                updatePremiumButtons();
+            }
+            
+            // Log content counts
+            console.log('Content Counts:');
+            console.log('- Free Writing Tasks: 100 available');
+            console.log('- Free Surveys: 100 available');
+            console.log('- Premium Surveys: 100 available');
+            console.log('- Premium Writing Tasks: 100 available');
+        });
+
+        function updatePremiumButtons() {
+            document.querySelectorAll('.payment-required-btn').forEach(btn => {
+                btn.innerHTML = '<i class="fas fa-unlock"></i> Access Premium Content';
+                btn.onclick = function() {
+                    alert('Premium content unlocked! You have access to:\n• 100 Premium Surveys ($15-$100 each)\n• 100 Premium Writing Tasks ($100-$500 each)\n• Product Testing Opportunities ($75-$300 + products)\n• Exclusive Market Research ($50-$200 for focus groups)');
+                };
+            });
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('paymentModal');
+            if (event.target === modal) {
+                closePaymentModal();
+            }
+        }
+    </script>
+</body>
+</html>
